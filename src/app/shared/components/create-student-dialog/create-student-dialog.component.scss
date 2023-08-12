@@ -1,0 +1,15 @@
+.student-info-dialog {
+  height: 70vh;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+
+  .mr-1 {
+    margin-right: .3rem;
+  }
+
+  .mt-1 {
+    margin-top: .3rem;
+  }
+
+}

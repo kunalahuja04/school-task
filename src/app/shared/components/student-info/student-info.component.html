@@ -1,0 +1,43 @@
+<h4 class="title" mat-dialog-title>Student Grades</h4>
+<div class="student-info-dialog" mat-dialog-content>
+    <div class="student-header">
+        <div class="image">
+            <img [src]="student?.imageUrl" class="student-image" alt="student-image">
+        </div>
+        <div class="student-details">
+            <span class="s-name-label mr-1">Name:</span> <span class="s-name-value">{{student?.name}}</span>
+
+            <div class="class-year">
+                <div class="s-class mt-1">
+                    <span class="class-label mr-1">Class:</span> <span class="class-value">{{student?.class}}</span>
+                </div>
+                <div class="s-year mt-1">
+                    <span class="year-label mr-1">Year:</span> <span class="year-value">{{student?.year}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grades">
+        <table mat-table [dataSource]="dataSource | keyvalue:orderByKey">
+            <ng-container matColumnDef="key">
+                <th mat-header-cell *matHeaderCellDef>Subject</th>
+                <td class="pointer" mat-cell *matCellDef="let subject">{{ subject?.value.subjectName }}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Marks</th>
+                <td class="pointer" mat-cell *matCellDef="let subject">{{ subject?.value.marks }}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <hr>
+        <div class="s-total-marks">
+            <span class="marks-title mr-1">Total Marks:</span> <span class="marks-value"><b>{{student?.grades?.totalMarks}}</b></span>
+        </div>
+    </div>
+</div>

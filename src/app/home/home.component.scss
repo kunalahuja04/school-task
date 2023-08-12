@@ -1,0 +1,40 @@
+.home-container {
+  .filter-container {
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+
+    .btn-area {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .pointer {
+    cursor: pointer;
+  }
+
+  .empty-message {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 10rem;
+    .btn-style {
+        transform: scale(1.5); background: mediumpurple; margin-top: 1rem;
+    }
+  }
+
+  .mat-form-field {
+    width: calc(33.33% - 10px);
+  }
+}
+
+mat-spinner {
+    height: 50vh !important;
+    margin: auto !important;
+}

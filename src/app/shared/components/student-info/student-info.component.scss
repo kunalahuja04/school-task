@@ -1,0 +1,41 @@
+.student-info-dialog {
+  height: 70vh;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+
+  .mr-1 {
+    margin-right: .3rem;
+}
+
+.mt-1 {
+      margin-top: .3rem;
+  }
+
+  .student-header {
+    display: flex;
+
+    .image {
+      margin-right: 2rem;
+
+      img {
+        height: 6rem;
+      }
+    }
+
+    .s-name-label {
+      font-size: 1rem;
+    }
+
+    .s-name-value {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+  }
+
+  .grades {
+    .s-total-marks {
+        text-align: center;
+    }
+  }
+}

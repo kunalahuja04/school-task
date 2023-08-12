@@ -1,0 +1,85 @@
+<div class="home-container">
+    <div class="filter-container">
+        <h4>Please apply the neccessary filters</h4>
+        <div class="filters" [formGroup]="filterForm">
+            <mat-form-field>
+                <mat-label>Primary / Secondary</mat-label>
+                <mat-select formControlName="filterType" (ngModelChange)="updateClassOptions()">
+                    <mat-option value="primary">Primary</mat-option>
+                    <mat-option value="secondary">Secondary</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Classes</mat-label>
+                <mat-select formControlName="studentClass">
+                    <mat-option [value]="classItem" *ngFor="let classItem of classList"> Class {{ classItem
+                        }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Year</mat-label>
+                <mat-select formControlName="year">
+                    <mat-option *ngFor="let year of yearsList" [value]="year">{{year}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="btn-area">
+            <button mat-raised-button color="accent"
+                [disabled]="!filterForm.valid || !filterForm.get('studentClass')?.value || !filterForm.get('year')?.value"
+                (click)="submitFilterForm()">Submit</button>
+        </div>
+    </div>
+    <mat-spinner [diameter]="80" *ngIf="!!loading"></mat-spinner>
+    <div class="empty-message" *ngIf="studentsPresent && students.length === 0 && !loading">
+        <p>No Students found!</p>
+        <button type="button" mat-icon-button color="primary" class="btn-style" (click)="openAddStudentDialog()"><mat-icon>add</mat-icon></button>
+    </div>
+    <div *ngIf="students.length > 0" class="student-table">
+        <table mat-table [dataSource]="students">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td class="pointer" (click)="openDialog(student)" mat-cell *matCellDef="let student">{{ student.name }}
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef>Year</th>
+                <td class="pointer" (click)="openDialog(student)" mat-cell *matCellDef="let student">{{ student.year }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="class">
+                <th mat-header-cell *matHeaderCellDef>Class</th>
+                <td class="pointer" (click)="openDialog(student)" mat-cell *matCellDef="let student">{{ student.class }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action-edit">
+                <th mat-header-cell *matHeaderCellDef>
+                    <button type="button" mat-flat-button color="primary" style="width: 8rem"
+                        (click)="openAddStudentDialog()">Add Student</button>
+                </th>
+                <td class="pointer" mat-cell colspan="0" *matCellDef="let student; let i = index;" style="width: 0;">
+                    <button mat-icon-button color="warn">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action-delete">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="pointer" mat-cell colspan="0" *matCellDef="let student; let i = index;" style="width: 0;">
+                    <button mat-icon-button color="warn" (click)="deleteStudent(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="['name',  'year', 'class', 'action-edit', 'action-delete']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['name',  'year', 'class', 'action-edit', 'action-delete']"></tr>
+        </table>
+    </div>
+</div>
