@@ -27,7 +27,7 @@
 
             <ng-container matColumnDef="value">
                 <th mat-header-cell *matHeaderCellDef>Marks</th>
-                <td class="pointer" mat-cell *matCellDef="let subject">{{ subject?.value.marks }}</td>
+                <td class="pointer" mat-cell *matCellDef="let subject">{{ subject?.value.marks }} / 100</td>
             </ng-container>
 
 
@@ -37,7 +37,7 @@
 
         <hr>
         <div class="s-total-marks">
-            <span class="marks-title mr-1">Total Marks:</span> <span class="marks-value"><b>{{student?.grades?.totalMarks}}</b></span>
+            <span class="marks-title mr-1">Total Marks:</span> <span class="marks-value"><b>{{student?.grades?.totalMarks}} / {{dataSource.length*100}} </b></span>
         </div>
     </div>
 </div>

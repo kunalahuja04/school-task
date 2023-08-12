@@ -9,14 +9,16 @@
                     <mat-option value="secondary">Secondary</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field *ngIf="!!filterForm.get('filterType')?.value">
                 <mat-label>Classes</mat-label>
                 <mat-select formControlName="studentClass">
                     <mat-option [value]="classItem" *ngFor="let classItem of classList"> Class {{ classItem
                         }}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field>
+            <div class="empty"
+                *ngIf="!!!filterForm.get('filterType')?.value || !!!filterForm.get('studentClass')?.value"></div>
+            <mat-form-field *ngIf="!!filterForm.get('filterType')?.value && !!filterForm.get('studentClass')?.value">
                 <mat-label>Year</mat-label>
                 <mat-select formControlName="year">
                     <mat-option *ngFor="let year of yearsList" [value]="year">{{year}}</mat-option>
@@ -33,15 +35,25 @@
     <mat-spinner [diameter]="80" *ngIf="!!loading"></mat-spinner>
     <div class="empty-message" *ngIf="studentsPresent && students.length === 0 && !loading">
         <p>No Students found!</p>
-        <button type="button" mat-icon-button color="primary" class="btn-style" (click)="openAddStudentDialog()"><mat-icon>add</mat-icon></button>
+        <button type="button" mat-icon-button color="primary" class="btn-style"
+            (click)="openAddStudentDialog()"><mat-icon>add</mat-icon></button>
     </div>
     <div *ngIf="students.length > 0" class="student-table">
         <table mat-table [dataSource]="students">
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="name" [formGroup]="studentFormGroup">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td class="pointer" (click)="openDialog(student)" mat-cell *matCellDef="let student">{{ student.name }}
-                </td>
+                <ng-container *matCellDef="let student; let i = index">
+                    <td class="pointer" mat-cell *ngIf="editableRowIndex !== i; else editCell" (click)="openDialog(student)">
+                        {{ student.name }}
+                    </td>
+                    <ng-template #editCell>
+                        <mat-form-field>
+                            <input matInput formControlName="studentName" [(ngModel)]="student.name" class="edit-input">
+                        </mat-form-field>
+                    </ng-template>
+                </ng-container>
             </ng-container>
+
 
 
             <ng-container matColumnDef="year">
@@ -62,8 +74,10 @@
                         (click)="openAddStudentDialog()">Add Student</button>
                 </th>
                 <td class="pointer" mat-cell colspan="0" *matCellDef="let student; let i = index;" style="width: 0;">
-                    <button mat-icon-button color="warn">
-                        <mat-icon>edit</mat-icon>
+                    <button mat-icon-button [color]="editableRowIndex !== i ? 'accent' : 'primary'" type="button"
+                        (click)="editableRowIndex !== i ? editStudentInfo(student, i) : saveEditedStudent(student)">
+                        <mat-icon *ngIf="editableRowIndex !== i">edit</mat-icon>
+                        <mat-icon *ngIf="editableRowIndex === i">check_circle</mat-icon>
                     </button>
                 </td>
             </ng-container>

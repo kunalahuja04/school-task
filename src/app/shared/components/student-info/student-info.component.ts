@@ -17,8 +17,6 @@ export class StudentInfoComponent implements OnInit {
   ngOnInit(): void {
     this.student = this.data.data;
     this.dataSource = this.student?.grades?.subjects;
-
-    console.log(this.data);
   }
 
   public orderByKey(a: any, b: any) {

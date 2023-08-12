@@ -1,5 +1,10 @@
 import { Component, NO_ERRORS_SCHEMA, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { IStudent } from 'src/types/types';
 import { StudentService } from '../services/student.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,19 +22,25 @@ export class HomeComponent {
   yearsList: string[] = [];
   filterForm: FormGroup;
   loading: boolean = false;
+  isEditing: boolean = false;
+  editableRowIndex: number | null = null;
   students: IStudent[] = [];
   studentsPresent: boolean = false;
-
+  studentFormGroup: FormGroup;
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
     public dialog: MatDialog
   ) {
+    this.studentFormGroup = this.fb.group({
+      studentName: [null],
+    });
     this.filterForm = this.fb.group({
       filterType: [null, Validators.required],
       year: [null],
       studentClass: [null],
     });
+
     // let filteredStudents: IStudent[] = [];
     // this.studentService.getAllStudents().subscribe((students) => {
     //   const k = students.filter((student) => {
@@ -88,8 +99,21 @@ export class HomeComponent {
         const selectedClass = this.filterForm.get('studentClass')?.value;
         this.students = this.filterStudents(selectedYear, selectedClass);
         this.loading = false;
-      }, 2000);
+      }, 1000);
     }
+  }
+
+  editStudentInfo(student: IStudent, index: number) {
+    if (this.editableRowIndex === index) {
+      this.editableRowIndex = null; // Close editing
+    } else {
+      this.editableRowIndex = index; // Open editing for the selected row
+    }
+  }
+
+  saveEditedStudent(student: IStudent): void {
+    this.students[this.editableRowIndex!].name = student.name;
+    this.editableRowIndex = null;
   }
 
   openDialog(student: IStudent) {
